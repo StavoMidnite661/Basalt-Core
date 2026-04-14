@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-basalt-800: #2a2a2a;
+  --color-basalt-900: #1a1a1a;
+  --color-basalt-950: #111111;
+  --color-basalt-bg: #0d0d0d;
+  --color-basalt-panel: #161616;
+  --color-authority-cyan: #00f2ff;
+  --color-authority-amber: #ffb800;
+  --color-mechanical-red: #ff3333;
+  --color-basalt-orange: #ff4400;
+  --color-basalt-green: #a3ff00;
+}
+
+@layer utilities {
+  .writing-vertical-rl {
+    writing-mode: vertical-rl;
+  }
+  .bg-stripes {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.02) 20px
+    );
+  }
+  .chamfer-br {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+  }
+  .mechanical-fault {
+    filter: grayscale(1) sepia(0.2) brightness(0.6) contrast(1.2);
+    pointer-events: none;
+    cursor: not-allowed;
+    animation: jitter 0.1s infinite;
+  }
+  .consensus-ripple {
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+    animation: quorum-flash 0.5s ease-out;
+  }
+}
+
+@keyframes jitter {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0,0); }
+}
+
+@keyframes quorum-flash {
+  0% { background-color: rgba(0, 242, 255, 0.8); }
+  100% { background-color: transparent; }
+}
