@@ -13,6 +13,11 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
   const [processingState, setProcessingState] = useState<'IDLE' | 'UPLOADING' | 'BURNING' | 'ATTESTED' | 'EMAILING'>('IDLE');
   const [portalTab, setPortalTab] = useState<'PERFORMANCE' | 'ONBOARDING'>('PERFORMANCE');
   const [lastAttestation, setLastAttestation] = useState<{id: string, amount: string} | null>(null);
+  const [attestations, setAttestations] = useState<{id: string, amount: string, emailed: boolean}[]>([
+    { id: 'ATT-2026-991', amount: '12,000.00', emailed: true },
+    { id: 'ATT-2026-992', amount: '12,000.00', emailed: true }
+  ]);
+  const [totalBurned, setTotalBurned] = useState(124500);
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,13 +49,23 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
         setLastAttestation({ id: attId, amount: amt });
         setProcessingState('ATTESTED');
         onBurn(attId, amt); // Trigger event in the main buffer
+        setTotalBurned(prev => prev + 12000);
         
         // Trigger Email Dispatch
         setTimeout(async () => {
           setProcessingState('EMAILING');
-          // Simulate email service
-          console.log(`Email sent to ${vendorEmail} for ${attId}`);
           
+          // Simulate email service
+          await sendPerformanceConfirmation({
+            vendorCode,
+            vendorName,
+            vendorEmail,
+            attestationId: attId,
+            burnedAmount: amt
+          });
+          
+          setAttestations(prev => [{ id: attId, amount: amt, emailed: true }, ...prev]);
+
           setTimeout(() => setProcessingState('IDLE'), 4000);
         }, 1500);
 
@@ -227,7 +242,7 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
                 <div className="bg-basalt-950 border border-basalt-800 p-4 font-mono text-[10px] text-zinc-400 h-40 overflow-y-auto flex flex-col gap-1">
                   {processingState === 'UPLOADING' && <>&gt; INGESTING VENDOR INSTRUMENT...<br/>&gt; VERIFYING CRYPTOGRAPHIC SIGNATURE...</>}
                   {processingState === 'BURNING' && <span className="text-basalt-orange">&gt; INSTRUMENT VERIFIED.<br/>&gt; INITIATING SMART CONTRACT BURN SEQUENCE...<br/>&gt; DESTROYING STORED VALUE TOKENS...</span>}
-                  {(processingState === 'ATTESTED' || processingState === 'EMAILING') && <span className="text-basalt-green">&gt; TOKENS BURNED SUCCESSFULLY.<br/>&gt; PERFORMANCE ATTESTATION GENERATED.<br/>&gt; COMMITTED TO DISTRIBUTED LEDGER.</span>}
+                  {(processingState === 'ATTESTED' || processingState === 'EMAILING') && <span className="text-basalt-green">&gt; TOKENS BURNED SUCCESSFULLY: {lastAttestation?.amount} SVT<br/>&gt; PERFORMANCE ATTESTATION GENERATED: {lastAttestation?.id}<br/>&gt; COMMITTED TO DISTRIBUTED LEDGER.</span>}
                   {processingState === 'EMAILING' && (
                     <motion.span 
                       initial={{ opacity: 0 }} 
@@ -237,6 +252,7 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
                       &gt; DISPATCHING SECURE EMAIL RECEIPT...<br/>
                       &gt; TO: {vendorEmail}<br/>
                       &gt; CC: admin@sovr.credit<br/>
+                      &gt; ATTACHMENT: {lastAttestation?.id}.pdf<br/>
                       &gt; STATUS: DELIVERED
                     </motion.span>
                   )}
@@ -270,7 +286,7 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
               </div>
               <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-xs font-bold">
                 <span className="text-zinc-400 tracking-widest">TOKENS BURNED (YTD)</span>
-                <span className="text-basalt-orange tracking-widest">124,500.00 SVT</span>
+                <span className="text-basalt-orange tracking-widest">{(totalBurned).toLocaleString(undefined, { minimumFractionDigits: 2 })} SVT</span>
               </div>
               <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-xs font-bold">
                 <span className="text-zinc-400 tracking-widest">NISTIR 8202 COMPLIANCE</span>
@@ -284,17 +300,17 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
                 <Mail className="w-3 h-3 text-zinc-600" />
               </h4>
               <div className="space-y-2">
-                {[1, 2].map((i) => (
-                  <div key={i} className="bg-basalt-950 border border-basalt-800 p-3 flex items-center justify-between">
+                {attestations.map((att) => (
+                  <div key={att.id} className="bg-basalt-950 border border-basalt-800 p-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <FileCheck2 className="w-4 h-4 text-basalt-green" />
                       <div>
-                        <div className="text-[10px] font-bold text-white">ATT-2026-{990 + i}</div>
-                        <div className="text-[8px] text-zinc-500">RECEIPT EMAILED</div>
+                        <div className="text-[10px] font-bold text-white">{att.id}</div>
+                        <div className="text-[8px] text-zinc-500">{att.emailed ? 'RECEIPT EMAILED' : 'PROCESSING...'}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] font-bold text-basalt-orange">-12,000 SVT</div>
+                      <div className="text-[10px] font-bold text-basalt-orange">-{att.amount} SVT</div>
                       <div className="text-[8px] text-zinc-500">BURNED</div>
                     </div>
                   </div>

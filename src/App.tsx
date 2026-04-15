@@ -51,13 +51,15 @@ export default function App() {
     return () => clearInterval(interval);
   }, [systemFault]);
 
-  const handleManualIngest = () => {
+  const handleManualIngest = (parsedEvent?: Partial<ClearingEvent>) => {
     if (systemFault) return;
     setRawBuffer(prev => {
-      const newEvent = generateMockClearingEvent();
+      const newEvent = parsedEvent 
+        ? { ...generateMockClearingEvent(), ...parsedEvent } as ClearingEvent
+        : generateMockClearingEvent();
       return [newEvent, ...prev].slice(0, 10);
     });
-    appendAudit('MANUAL_INGESTION_TRIGGERED', 'INGESTION');
+    appendAudit(parsedEvent ? 'XML_INSTRUMENT_INGESTED' : 'MANUAL_INGESTION_TRIGGERED', 'INGESTION');
   };
 
   const handleTabChange = (tab: string) => {
@@ -136,7 +138,7 @@ export default function App() {
       {/* Header */}
       <header className="h-14 border-b border-basalt-800 flex justify-between items-center px-6 shrink-0 bg-basalt-bg z-10">
         <div className="text-lg font-black tracking-tighter text-white">
-          BASALT<span className="text-basalt-orange">CORE</span>
+          SOVR<span className="text-basalt-orange">COR</span>
         </div>
         <div className="flex items-center gap-4 text-[10px] font-bold tracking-widest text-zinc-400">
           <span>SESSION: RECEIVERSHIP_9921_X</span>
