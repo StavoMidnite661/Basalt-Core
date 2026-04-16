@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { X, ShieldCheck, User, Clock } from 'lucide-react';
+import { X, ShieldCheck, User, Clock, FileText } from 'lucide-react';
 import { ClearingEvent } from '../../lib/schemas';
+import { ACHProtocol, SWIFTProtocol } from '../../lib/protocols';
 
 interface TransactionModalProps {
   event: ClearingEvent;
@@ -17,6 +18,10 @@ export function getClientForEvent(eventId: string) {
 
 export default function TransactionModal({ event, onClose, onSelectClient }: TransactionModalProps) {
   const clientName = getClientForEvent(event.eventId);
+  const [activeProtocol, setActiveProtocol] = useState<'NONE' | 'ACH' | 'SWIFT'>('NONE');
+
+  const rawACH = ACHProtocol.generateNacha(event, clientName);
+  const rawSWIFT = SWIFTProtocol.generateMT103(event, clientName);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono">
@@ -26,7 +31,7 @@ export default function TransactionModal({ event, onClose, onSelectClient }: Tra
         className="bg-basalt-panel border border-basalt-800 max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]"
       >
         {/* Header */}
-        <div className="border-b border-basalt-800 p-6 flex justify-between items-start bg-basalt-bg relative">
+        <div className="border-b border-basalt-800 p-6 flex justify-between items-start bg-basalt-bg relative shrink-0">
           <div className="absolute top-0 left-0 w-full h-1 bg-basalt-orange" />
           <div>
             <div className="flex items-center gap-4 mb-4">
@@ -88,7 +93,7 @@ export default function TransactionModal({ event, onClose, onSelectClient }: Tra
             </div>
           </div>
 
-          <div>
+          <div className="border-b border-basalt-800 pb-6">
             <h3 className="text-sm font-black text-white mb-4 tracking-widest uppercase">Routing Trace</h3>
             <div className="space-y-4">
               <div className="flex gap-3">
@@ -115,6 +120,46 @@ export default function TransactionModal({ event, onClose, onSelectClient }: Tra
               </div>
             </div>
           </div>
+
+          {/* Legacy Settlement Translation */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-black text-white tracking-widest uppercase flex items-center gap-2">
+                <FileText className="w-4 h-4 text-basalt-orange" />
+                Legacy Settlement Translation
+              </h3>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => setActiveProtocol(activeProtocol === 'ACH' ? 'NONE' : 'ACH')}
+                  className={`text-[9px] px-3 py-1 font-bold tracking-widest transition-colors ${activeProtocol === 'ACH' ? 'bg-basalt-orange text-black' : 'bg-basalt-800 text-zinc-400 hover:text-white'}`}
+                >
+                  NACHA (ACH)
+                </button>
+                <button 
+                  onClick={() => setActiveProtocol(activeProtocol === 'SWIFT' ? 'NONE' : 'SWIFT')}
+                  className={`text-[9px] px-3 py-1 font-bold tracking-widest transition-colors ${activeProtocol === 'SWIFT' ? 'bg-basalt-orange text-black' : 'bg-basalt-800 text-zinc-400 hover:text-white'}`}
+                >
+                  SWIFT MT103
+                </button>
+              </div>
+            </div>
+
+            {activeProtocol !== 'NONE' && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="bg-basalt-950 border border-basalt-800 p-4 overflow-x-auto"
+              >
+                <div className="text-[9px] text-zinc-500 font-bold tracking-widest mb-2 uppercase">
+                  {activeProtocol === 'ACH' ? 'FIXED-WIDTH NACHA FILE FORMAT' : 'SWIFT MT103 MESSAGE BLOCK'}
+                </div>
+                <pre className="text-[10px] text-authority-cyan font-mono whitespace-pre">
+                  {activeProtocol === 'ACH' ? rawACH : rawSWIFT}
+                </pre>
+              </motion.div>
+            )}
+          </div>
+
         </div>
       </motion.div>
     </div>
