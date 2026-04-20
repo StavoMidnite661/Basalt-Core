@@ -12,6 +12,7 @@ import LedgerHistory from './components/PrivateLedger/LedgerHistory';
 import TransactionModal from './components/TruthStream/TransactionModal';
 import AuditLog, { AuditEntry } from './components/PrivateLedger/AuditLog';
 import PerformanceBridge from './components/Performance/Bridge';
+import LandingPage from './components/LandingPage';
 import { generateMockClearingEvent } from './lib/truth-engine';
 import { ClearingEvent } from './lib/schemas';
 import { verifyMechanicalTruth } from './lib/truth-gate';
@@ -19,7 +20,7 @@ import { tbClient, TBFlag } from './lib/tigerbeetle';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('vendor');
-  const [userRole, setUserRole] = useState<'TREASURY' | 'VENDOR'>('TREASURY');
+  const [userRole, setUserRole] = useState<'LANDING' | 'TREASURY' | 'VENDOR'>('LANDING');
   const [rawBuffer, setRawBuffer] = useState<unknown[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<ClearingEvent | null>(null);
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
@@ -168,6 +169,18 @@ export default function App() {
   const totalVolume = svt + fiatTransit;
   const efc = totalVolume > 0 ? ((fees / totalVolume) * 100).toFixed(4) : "0.0000";
 
+  if (userRole === 'LANDING') {
+    return (
+      <LandingPage 
+        onLogin={(role) => {
+          setUserRole(role);
+          setActiveTab(role === 'TREASURY' ? 'ingestion' : 'vendor');
+          appendAudit(`USER_AUTHENTICATED: ${role}`, 'AUTH');
+        }} 
+      />
+    );
+  }
+
   return (
     <div className={`flex flex-col h-screen w-full bg-basalt-bg text-zinc-200 overflow-hidden selection:bg-basalt-orange/30 font-mono ${systemFault ? 'mechanical-fault' : ''}`}>
       {/* Header */}
@@ -188,6 +201,13 @@ export default function App() {
               className={`text-[8px] font-bold tracking-widest px-3 py-1 uppercase transition-colors ${userRole === 'VENDOR' ? 'bg-basalt-orange text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
               Vendor_Portal
+            </button>
+            <button 
+              onClick={() => { setUserRole('LANDING'); }}
+              className={`text-[8px] font-bold tracking-widest px-3 py-1 uppercase transition-colors text-zinc-600 hover:text-mechanical-red hover:bg-mechanical-red/10 border-l border-basalt-800 ml-1`}
+              title="Terminate Session"
+            >
+              EXIT
             </button>
           </div>
         </div>

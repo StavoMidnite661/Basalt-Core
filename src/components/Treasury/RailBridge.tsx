@@ -92,7 +92,11 @@ export default function RailBridge({ onExecute }: { onExecute?: () => void }) {
         <button 
           onClick={handleExecute}
           disabled={!selectedRail || availableSVT <= 0 || railStatus === 'SETTLED_EXTERNALLY'}
-          className={`w-full py-4 text-black font-black text-xs uppercase transition-all ${!selectedRail || availableSVT <= 0 || railStatus === 'SETTLED_EXTERNALLY' ? 'bg-basalt-800 text-zinc-500 cursor-not-allowed' : 'bg-authority-cyan hover:bg-white shadow-[0_0_25px_rgba(0,242,255,0.3)]'}`}
+          className={`w-full py-4 text-black font-black text-xs uppercase transition-all border ${
+            !selectedRail || availableSVT <= 0 || railStatus === 'SETTLED_EXTERNALLY' 
+              ? 'bg-basalt-800 border-basalt-800 text-zinc-500 cursor-not-allowed' 
+              : 'bg-authority-cyan border-authority-cyan hover:bg-white hover:border-white'
+            }`}
         >
           {railStatus === 'SETTLED_EXTERNALLY' ? 'EXIT_COMPLETED' : 'EXECUTE_FIAT_EXIT_BRIDGE'}
         </button>

@@ -1,106 +1,125 @@
-# BASALT CORE: Mechanical Truth & Distributed Ledger System
+# SOVRCOR // BASALT_CORE
 
-![BASALT CORE](https://img.shields.io/badge/STATUS-ACTIVE-00f2ff?style=for-the-badge&logoColor=black&color=0b101e&labelColor=00f2ff)
-![UCC-9](https://img.shields.io/badge/COMPLIANCE-UCC--9-00f2ff?style=for-the-badge&logoColor=black&color=0b101e&labelColor=00f2ff)
-![NISTIR](https://img.shields.io/badge/SECURITY-NISTIR_8202-00f2ff?style=for-the-badge&logoColor=black&color=0b101e&labelColor=00f2ff)
+![SOVRCOR System Status](https://img.shields.io/badge/STATUS-COMMISSIONED-a3ff00?style=for-the-badge)
+![NISTIR 8202](https://img.shields.io/badge/COMPLIANCE-NISTIR_8202-00f2ff?style=for-the-badge)
+![UCC-9](https://img.shields.io/badge/PERFECTION-UCC_9-00f2ff?style=for-the-badge)
 
-## Overview
-**BASALT CORE** is a high-performance, closed-loop settlement system designed to enforce "Mechanical Truth" through distributed consensus, cryptographic staging, and strict UCC-9 compliance. It replaces traditional, error-prone financial reconciliation with an immutable, mathematically verifiable ledger. 
+**SOVRCOR** (Basalt Core Engine) is a high-fidelity sovereignty engine. 
 
-Built with a strict brutalist, terminal-inspired UI, the system emphasizes data density, transparency, and mechanical reliability over superficial aesthetics.
-
----
-
-## Core Doctrines
-1. **Mechanical Truth**: Data is not accepted; it is verified. Every transaction must pass through the `truth-gate` before entering the ledger.
-2. **Distributed Oversight**: Single points of failure are eliminated. Critical operations, such as minting new assets, require a multi-signature quorum (Vector Gamma).
-3. **Immutable Auditability**: Every action, fault, and signature is permanently logged with a cryptographic hash in the Session Audit Log.
-4. **Brutalist Transparency**: The UI hides nothing. Hashes, routing traces, and system states are exposed directly to the operator.
+Designed to bypass the narrative promise of commercial banking, SOVRCOR introduces the mechanical truth of a private, distributed ledger. Through robust **Role-Based Access Control (RBAC)**, strictly partitioned **TigerBeetle** double-entry logic, and pure **deterministic state management**, the application provides a zero-risk environment for the origination, perfection, and settlement of sovereign credit.
 
 ---
 
-## System Modules & Features
+## 🎯 Executive Doctrine
 
-### 1. Ingestion Dashboard (`/Dashboard/Ingestion`)
-The entry point for raw financial data. It simulates the ingestion of high-velocity data streams (e.g., ISO 20022 messages) and passes them to the Truth Gate for verification. Features real-time buffer monitoring and fault injection capabilities.
+> *“The Era of Narrative Finance is Over.”*
 
-### 2. Ledger Topology (`/TopologyMap/LedgerTopology`)
-A real-time D3.js visualizer mapping the relationships between Authority Nodes, Instruments (e.g., Promissory Notes), and Accounts. It provides a visual representation of the UCC-9 perfection status and system faults.
+By grounding operations in **UCC-9 Compliance**, strictly interpreting the **Uniform Commercial Code (UCC)**, and running a sandboxed implementation of a two-phase private ledger, SOVRCOR strips away counter-party risk. 
 
-### 3. UCC Engine (`/UccEngine/Compliance`)
-Monitors and enforces Uniform Commercial Code Article 9 (UCC-9) compliance. It tracks the perfection status of collateral and ensures that the system's collateral coverage ratio remains within acceptable bounds.
+## 🏗 System Architecture & Stack
 
-### 4. Treasury Authority (`/Treasury/Hud` & `QuorumStaging`)
-The heart of the system's seigniorage capabilities. 
-*   **Vector Gamma Implementation**: Minting requires initiating a "Quorum Sequence" where 3 out of 5 distributed Authority Nodes must cryptographically sign the transaction before collateral is locked and tokens are minted.
+- **Framework:** React 18 / Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 (Custom `basalt` brutally dark theme system)
+- **Animation Engine:** Framer Motion (State-driven transitions)
+- **Data Visualization:** D3.js (Force-directed node topology mapping)
+- **Ledger Engine:** Simulated TigerBeetle two-phase commit wrapper
+- **UI Tooling:** Lucide React (Iconography)
 
-### 5. Tax Engine (`/TaxEngine/TaxStrategy`)
-Simulates real-time tax strategy and optimization, calculating Net Operating Loss (NOL) offsets and ensuring compliance with tax regulations during settlement.
+## ✨ Core Features & Modules
 
-### 6. Vendor Portal (`/Vendor/Portal`)
-A secure interface for vendor management and performance processing.
-*   **Onboarding**: Secure registration generating unique vendor codes.
-*   **Performance Portal**: Vendors upload proof of performance, triggering a smart contract burn sequence. Tokens are destroyed, and a cryptographic attestation is generated and emailed to the vendor.
+### 1. Dual-Role Mechanics (RBAC)
+- **Treasury / CFO Admin (`CFO_Admin`)**: Full access to global node health, TigerBeetle ledgers, macro topology, tax strategies, and external SWIFT/FEDWIRE bridging.
+- **Vendor Portal (`Supply_Chain`)**: Strictly sandboxed ingestion UI to onboard entities, upload invoices, pledge non-cash performance deliverables, and request digital attestations.
 
-### 7. Distributed Ledger & Client Views (`/PrivateLedger/LedgerHistory`)
-An account-styled distributed ledger view combining all live, pending, and completed transactions.
-*   **Global Ledger**: View all system transactions with status indicators (Pending Approval vs. Processing Settlement).
-*   **Client-Specific Drilldown**: Clicking on a client in a transaction modal filters the ledger to show only that entity's history, complete with generated wallet addresses and specific routing traces.
-*   **Transaction Modals**: Deep-dive modals showing cryptographic hashes, compliance checks, and API gateway routing traces.
+### 2. The Truth Engine & TigerBeetle Core
+- **Mechanical Double-Entry**: Native adherence to debits and credits without floating point loss.
+- **Two-Phase Commits**: Enforces the gap between `PENDING` states and `POSTED` clearings. 
+- **Truth Stream**: Right-hand column (available to Treasury) displaying real-time deterministic changes, block hashes, and system audits.
 
----
+### 3. Macro Node Topology (D3.js)
+- Force-directed graph representation of ledger nodes, simulated instrument attachments, and system-wide asset routing.
+- Injectable **Quorum Fault** simulators to test network resilience (`INJECT_FAULT` / `CLEAR_FAULT`).
 
-## Architecture & Data Flow
+### 4. UCC-9 Securitization & Legal Oracle
+- Converts uncollateralized liabilities into mathematically perfected **General Intangibles**.
+- Tracks **priority conflicts**, live syncs with collateral control agreements, and dynamically visualizes **NOL** (Net Operating Loss) asset limits.
 
-1. **The Truth Stream**: Raw events enter the system via the `generateMockClearingEvent` engine.
-2. **The Truth Gate**: Events are passed through `verifyMechanicalTruth()`, which validates schemas using Zod and ensures UCC-9 compliance.
-3. **State Management**: Verified events are stored in the `rawBuffer` and rendered across the UI (Truth Stream, Ledger History, Topology Map).
-4. **Audit Logging**: Every significant state change (tab switches, minting, burning, fault injections) is recorded in the `SessionAuditLog` with a unique cryptographic hash.
-
----
-
-## Tech Stack
-*   **Core Framework**: React 18+ / Vite
-*   **Styling**: Tailwind CSS v4 (Custom Brutalist Theme: `basalt-bg`, `basalt-panel`, `authority-cyan`, `basalt-green`)
-*   **Animations**: Framer Motion (`motion/react`) for layout transitions and quorum sequencing.
-*   **Data Visualization**: D3.js for force-directed topology graphs.
-*   **Icons**: Lucide React
-*   **Validation**: Zod for strict schema enforcement.
+### 5. Seigniorage & Treasury Hud
+- **Liquid Health Ratio (LHR)** monitoring.
+- Quorum-gated staging sequences requiring multiple cryptographic signatures to execute atomic minting phases.
 
 ---
 
-## Setup & Installation
+## 🚀 Initialization & Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/StavoMidnite661/BASALTCORE.git
-   cd BASALTCORE
-   ```
+### Requirements
+- Node.js (v18.x or above recommended)
+- `npm` or `yarn`
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### Installation Procedure
 
-3. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
+1. **Clone the repository** (if applicable):
+    ```bash
+    git clone https://github.com/organization/sovrcor-basalt.git
+    cd sovrcor-basalt
+    ```
 
-4. **Access the application:**
-   Open your browser and navigate to `http://localhost:3000` (or the port specified by Vite).
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
----
+3. **Initialize the local Vite gateway**:
+    ```bash
+    npm run dev
+    ```
 
-## UI/UX Philosophy: Brutalist & Monospace
-
-BASALT CORE rejects modern, soft UI trends in favor of a highly technical, brutalist aesthetic:
-*   **Sharp Edges**: No rounded corners (`rounded-none`).
-*   **Monospace Typography**: Heavy use of `font-mono`, `tracking-widest`, and `uppercase` for data labels.
-*   **High Contrast**: Deep blacks (`#060913`, `#0b101e`) contrasted with stark neon accents (Cyan, Green, Orange, Red).
-*   **Information Density**: Borders and grid layouts are used to separate dense blocks of technical data, hashes, and timestamps.
+4. **Access the Core**:
+    Navigate to `http://localhost:3000` to interact with the entry system.
 
 ---
 
-## Security & Compliance
-This system is designed to simulate compliance with **NISTIR 8202** DLT standards for stored value vaults. All cryptographic hashes generated in this staging environment are mock representations of ECDSA signatures. The system enforces strict separation of concerns between the API Gateway, Compliance Engine, and Ledger Storage.
+## 🛠 Directory Topology
+
+```text
+/src/
+ ├── components/
+ │    ├── Dashboard/     # Liability ingestion & ISO 20022 mechanics
+ │    ├── Performance/   # Performance Oracles & Verification Bridges
+ │    ├── PrivateLedger/ # Sidebar routing, Ledger logs, and Truth Streams
+ │    ├── TaxEngine/     # Corporate strategic tax mitigation interfaces
+ │    ├── TopologyMap/   # D3 Data visualizers and Ledger Topology
+ │    ├── Treasury/      # UCC-9 Backing, the Quorum Mint, and Exit Bridges
+ │    ├── TruthStream/   # Granular modal and settlement viewers
+ │    └── Vendor/        # Sandboxed onboarding gateways
+ │
+ ├── lib/
+ │    ├── email-service.ts  # Simulated SMTP attestation delivery
+ │    ├── schemas.ts        # Global TS Interfaces, Unions
+ │    ├── tigerbeetle.ts    # The mock implementation of the two-phase ledger
+ │    ├── truth-engine.ts   # Mocks system noise and clearing events
+ │    └── truth-gate.ts     # Verification gatekeepers for the ledger
+ │
+ ├── App.tsx          # Master routing & RBAC execution context
+ ├── index.css        # Basalt theme & mechanical glitch animations
+ └── main.tsx         # React render gateway
+```
+
+---
+
+## 🤝 Contribution Guidelines
+
+This repository operates under a strict **Zero-Narrative policy**. All contributions must enforce mechanical truth:
+1. **No hidden state.** All transitions must be visible to the `TruthStream`.
+2. **No floating-point math for ledgers.** All underlying state modifications must utilize integer wrappers or strictly validated double-entry logic via the `TigerBeetleSimulator`.
+3. **Typography & Styling:** Adhere to the `font-mono`, uppercase, tight-tracking aesthetic defined in the global CSS.
+
+**To propose changes:**
+1. Maintain your branch off `HEAD`.
+2. Ensure D3 force graphs and Framer Motion elements do not conflict or cause hardware acceleration repaints.
+3. Submit a Pull Request outlining the **deterministic impact** of the change.
+
+---
+
+*“In truth we trust. In mechanics we conquer.”*
