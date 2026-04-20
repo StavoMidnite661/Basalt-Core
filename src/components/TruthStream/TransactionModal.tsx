@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { X, ShieldCheck, User, Clock, FileText } from 'lucide-react';
 import { ClearingEvent } from '../../lib/schemas';
 import { ACHProtocol, SWIFTProtocol } from '../../lib/protocols';
+import DniGenerator from '../Oversight/DniGenerator';
 
 interface TransactionModalProps {
   event: ClearingEvent;
@@ -158,6 +159,9 @@ export default function TransactionModal({ event, onClose, onSelectClient }: Tra
                 </pre>
               </motion.div>
             )}
+
+            {event.status !== 'PENDING' && <DniGenerator settledTx={event} />}
+            
           </div>
 
         </div>

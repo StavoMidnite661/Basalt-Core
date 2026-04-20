@@ -76,28 +76,84 @@ export default function IngestionDashboard({ onIngest }: { onIngest: (event?: Pa
 
   return (
     <div className="h-full flex flex-col p-6 font-mono text-zinc-200 gap-6 max-w-6xl mx-auto min-h-0">
+      {/* Header */}
+      <h2 className="text-xl font-black text-white shrink-0 tracking-widest flex justify-between items-center bg-basalt-bg border-b border-basalt-800 pb-4">
+        <span>01_LIABILITY_INGESTION (ISO 20022)</span>
+        <div className="text-[10px] text-zinc-500 font-bold bg-basalt-panel px-3 py-1 border border-basalt-800 uppercase">
+          Originating Assets
+        </div>
+      </h2>
+
       {/* Top Drop Zone / XML Input */}
-      <div className="border border-basalt-800 p-6 flex flex-col bg-basalt-panel shrink-0">
+      <div className="border border-basalt-800 p-6 flex flex-col bg-basalt-panel shrink-0 relative group">
         <div className="flex justify-between items-center mb-4">
           <div className="text-authority-cyan text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
             <FileCode2 className="w-4 h-4" />
             ISO 20022 Deep Parser (CAMT.053 / PAIN.001)
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 relative z-10">
             <button onClick={loadMockCamt} className="text-[9px] bg-basalt-800 hover:bg-basalt-700 px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors">
               LOAD MOCK CAMT.053
             </button>
             <button onClick={loadMockPain} className="text-[9px] bg-basalt-800 hover:bg-basalt-700 px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors">
               LOAD MOCK PAIN.001
             </button>
+            <button onClick={() => document.getElementById('iso-upload')?.click()} className="text-[9px] border border-authority-cyan/50 text-authority-cyan hover:bg-authority-cyan hover:text-black px-3 py-1 font-black tracking-widest transition-colors">
+              UPLOAD XML FILE
+            </button>
+            <input 
+              type="file" 
+              id="iso-upload" 
+              className="hidden" 
+              accept=".xml"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (e) => {
+                    const text = e.target?.result;
+                    if (typeof text === 'string') {
+                      setXmlInput(text);
+                    }
+                  };
+                  reader.readAsText(file);
+                }
+              }}
+            />
           </div>
         </div>
         
         <textarea 
           value={xmlInput}
           onChange={(e) => setXmlInput(e.target.value)}
-          placeholder="Paste raw ISO 20022 XML here..."
-          className="w-full h-32 bg-basalt-950 border border-basalt-800 p-4 text-[10px] text-zinc-400 font-mono focus:outline-none focus:border-authority-cyan transition-colors resize-none mb-4"
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.add('border-authority-cyan', 'bg-authority-cyan/5');
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('border-authority-cyan', 'bg-authority-cyan/5');
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('border-authority-cyan', 'bg-authority-cyan/5');
+            const file = e.dataTransfer.files?.[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const text = e.target?.result;
+                if (typeof text === 'string') {
+                  setXmlInput(text);
+                }
+              };
+              reader.readAsText(file);
+            }
+          }}
+          placeholder="Paste raw ISO 20022 XML here, or drag and drop an .xml file..."
+          className="w-full h-32 bg-basalt-950 border border-basalt-800 p-4 text-[10px] text-zinc-400 font-mono focus:outline-none focus:border-authority-cyan transition-colors resize-none mb-4 relative z-10"
         />
 
         <div className="flex justify-between items-center">

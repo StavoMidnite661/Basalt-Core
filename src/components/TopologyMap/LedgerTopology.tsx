@@ -155,10 +155,10 @@ export default function LedgerTopology({ nodes, links, systemFault, onToggleFaul
     <div ref={containerRef} className="w-full h-full bg-basalt-950 relative overflow-hidden">
       <div className="absolute top-4 left-4 z-10">
         <h2 className="text-[12px] font-black tracking-widest text-zinc-400 font-mono">
-          LEDGER_TOPOLOGY_MAP
+          06_NODE_TOPOLOGY_MAP
         </h2>
-        <div className="text-[9px] text-zinc-600 font-mono mt-1">
-          UCC-9 RELATIONSHIP VISUALIZER
+        <div className="text-[9px] text-zinc-600 font-mono mt-1 uppercase">
+          Macro Ledger Oversight & Risk Routing
         </div>
       </div>
 

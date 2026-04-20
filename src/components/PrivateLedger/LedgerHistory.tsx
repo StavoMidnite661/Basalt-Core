@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ClearingEvent } from '../../lib/schemas';
 import { verifyMechanicalTruth } from '../../lib/truth-gate';
-import { FileText, Clock, CheckCircle2, ArrowLeft, User } from 'lucide-react';
+import { FileText, Clock, CheckCircle2, ArrowLeft, User, Database } from 'lucide-react';
 import { getClientForEvent } from '../TruthStream/TransactionModal';
+import { tbClient, TBFlag, TBTransfer } from '../../lib/tigerbeetle';
 
 interface LedgerHistoryProps {
   transactions: unknown[];
@@ -13,13 +14,23 @@ interface LedgerHistoryProps {
 }
 
 export default function LedgerHistory({ transactions, selectedClient, onClearClient, onSelectEvent }: LedgerHistoryProps) {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const handler = () => setTick(t => t + 1);
+    tbClient.on('change', handler);
+    return () => tbClient.off('change', handler);
+  }, []);
+
   const verifiedEvents = useMemo(() => {
     return transactions
       .map(verifyMechanicalTruth)
       .filter((e): e is ClearingEvent => e !== null);
   }, [transactions]);
 
-  // Mock some pending and failed transactions for visual variety
+  // Combine TB transfers logic with previous events for robust accounting visual
+  const accounts = Array.from(tbClient.accounts.values());
+  const tbTransfers = Array.from(tbClient.transfers.values()).sort((a, b) => b.timestamp - a.timestamp);
   const allTransactions = useMemo(() => {
     const history = [...verifiedEvents];
     
@@ -152,10 +163,10 @@ export default function LedgerHistory({ transactions, selectedClient, onClearCli
         <div>
           <h2 className="text-xl font-black tracking-widest text-white flex items-center gap-3">
             <FileText className="w-6 h-6 text-authority-cyan" />
-            DISTRIBUTED_LEDGER_HISTORY
+            05_SETTLEMENT_LEDGER
           </h2>
           <p className="text-[10px] text-zinc-500 uppercase italic font-bold tracking-widest mt-1">
-            Immutable Record of Truth // Account-Styled View
+            Immutable Record of Truth // Fiat Off-Ramp Translations
           </p>
         </div>
         <div className="text-right">
@@ -165,6 +176,51 @@ export default function LedgerHistory({ transactions, selectedClient, onClearCli
           </div>
         </div>
       </header>
+
+      <div className="grid grid-cols-2 gap-4 shrink-0">
+        <div className="bg-basalt-panel border border-basalt-800 p-4">
+          <div className="text-[10px] text-zinc-400 font-bold tracking-widest uppercase mb-4 flex items-center gap-2">
+            <Database className="w-4 h-4 text-basalt-orange" />
+            TIGERBEETLE TWO-PHASE ACCOUNTS
+          </div>
+          <div className="space-y-4">
+            {accounts.map(acc => (
+              <div key={acc.id} className="border border-basalt-800 bg-basalt-950 p-3 flex justify-between items-center group">
+                <div>
+                  <div className="text-[11px] font-black tracking-widest uppercase text-white">{acc.name}</div>
+                  <div className="text-[9px] text-zinc-500 font-bold uppercase mt-1">ID: {acc.id}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[10px] text-zinc-400 font-bold mb-1">POSTED / AVAILABLE</div>
+                  <div className="text-sm font-black text-basalt-green">${(acc.credits_posted - acc.debits_posted - acc.debits_pending).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-basalt-panel border border-basalt-800 p-4 flex flex-col">
+          <div className="text-[10px] text-zinc-400 font-bold tracking-widest uppercase mb-4">
+            TIGERBEETLE RESERVATION STATE
+          </div>
+          <div className="flex-1 space-y-2 overflow-y-auto">
+             {tbTransfers.slice(0, 5).map(t => (
+               <div key={t.id} className="text-[9px] flex justify-between p-2 border border-basalt-800 bg-black items-center">
+                 <div className="flex items-center gap-3">
+                   <span className={`px-2 py-0.5 font-bold uppercase text-black ${
+                     t.flags === TBFlag.PENDING ? 'bg-authority-amber' : 
+                     t.flags === TBFlag.POST_PENDING ? 'bg-basalt-green' : 'bg-mechanical-red'
+                   }`}>
+                     {TBFlag[t.flags]}
+                   </span>
+                   <span className="text-zinc-500 font-mono text-[10px] truncate w-24">{t.id}</span>
+                 </div>
+                 <span className="text-white font-mono font-bold">${t.amount.toLocaleString()}</span>
+               </div>
+             ))}
+          </div>
+        </div>
+      </div>
 
       <div className="flex-1 bg-basalt-panel border border-basalt-800 flex flex-col min-h-0 overflow-hidden">
         {/* Table Header */}

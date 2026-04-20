@@ -54,8 +54,8 @@ export default function TreasuryHud({ onMint, systemFault, onAudit }: { onMint?:
       {/* 05_TREASURY_AUTHORITY_HEADER */}
       <div className="col-span-12 border-b border-basalt-800 pb-4 flex justify-between items-center shrink-0">
         <div>
-          <h1 className="text-xl font-black tracking-tighter text-white">05_TREASURY_AUTHORITY</h1>
-          <p className="text-[10px] text-zinc-500 uppercase italic font-bold tracking-widest mt-1">Seigniorage Authority: ACTIVE // Quorum: VERIFIED</p>
+          <h1 className="text-xl font-black tracking-tighter text-white">04_STORED_VALUE_ISSUANCE</h1>
+          <p className="text-[10px] text-zinc-500 uppercase italic font-bold tracking-widest mt-1">UCC-9 Backed Private Credit // SEIGNIORAGE QUORUM</p>
         </div>
         <div className="flex gap-8">
           <TrendStat label="TNE" value={`$${(metrics.total_net_equity/1000000).toFixed(2)}M`} color="text-authority-cyan" />

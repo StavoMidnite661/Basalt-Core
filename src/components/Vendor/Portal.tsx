@@ -75,20 +75,23 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
 
   if (!isAuthenticated) {
     return (
-      <div className="h-full flex items-center justify-center p-8 font-mono text-zinc-200 overflow-y-auto">
-        <div className="bg-basalt-panel border border-basalt-800 p-8 max-w-md w-full chamfer-br relative my-auto">
+      <div className="h-full flex items-center justify-center p-8 font-mono text-zinc-200 overflow-y-auto bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+        <div className="bg-basalt-panel border border-basalt-800 p-8 max-w-md w-full chamfer-br relative my-auto shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-1 bg-basalt-orange" />
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <Lock className="w-6 h-6 text-basalt-orange" />
               <h2 className="text-xl font-black text-white tracking-widest">
-                {authMode === 'LOGIN' ? 'VENDOR_AUTH' : 'VENDOR_ONBOARD'}
+                {authMode === 'LOGIN' ? '01_VENDOR_AUTH' : '01_VENDOR_ONBOARD'}
               </h2>
             </div>
+          </div>
+          <div className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest border-b border-basalt-800 pb-6 mb-6 flex justify-between items-center">
+            <span>Sovereign Supply Chain Portal</span>
             <button 
               type="button"
               onClick={() => setAuthMode(authMode === 'LOGIN' ? 'ONBOARD' : 'LOGIN')}
-              className="text-[9px] font-bold tracking-widest text-zinc-500 hover:text-white transition-colors underline"
+              className="text-authority-cyan hover:text-white transition-colors underline"
             >
               {authMode === 'LOGIN' ? 'NEW VENDOR?' : 'EXISTING VENDOR?'}
             </button>
@@ -176,14 +179,14 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
         <div>
           <h2 className="text-xl font-black tracking-widest text-white flex items-center gap-3">
             <ShieldAlert className="w-6 h-6 text-basalt-orange" />
-            VENDOR_MANAGEMENT
+            01_SUPPLY_CHAIN_PORTAL
           </h2>
           <div className="flex gap-4 mt-4">
             <button 
               onClick={() => setPortalTab('PERFORMANCE')}
               className={`text-[10px] font-bold tracking-widest pb-2 border-b-2 transition-colors ${portalTab === 'PERFORMANCE' ? 'border-basalt-orange text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
             >
-              PERFORMANCE PORTAL
+              PERFORMANCE ATTESTATION
             </button>
             <button 
               onClick={() => setPortalTab('ONBOARDING')}
@@ -205,19 +208,50 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
         <div className="flex flex-col gap-6 min-h-0">
           <div className="flex-1 border border-dashed border-basalt-orange/50 p-6 flex flex-col items-center justify-center bg-basalt-orange/5 relative overflow-hidden">
             {processingState === 'IDLE' ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center flex flex-col items-center">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center flex flex-col items-center w-full max-w-sm">
                 <Upload className="w-10 h-10 text-basalt-orange mb-4" />
                 <h3 className="text-lg font-black text-white tracking-wide mb-2">UPLOAD PERFORMANCE INSTRUMENT</h3>
-                <p className="text-[9px] text-zinc-500 font-bold tracking-widest mb-6 max-w-xs text-center">
-                  SUBMIT PROOF OF PERFORMANCE TO INITIATE TOKEN BURN AND GENERATE ATTESTATION.
+                <p className="text-[9px] text-zinc-500 font-bold tracking-widest mb-6 text-center">
+                  SUBMIT INVOICES, BILLS OF LADING, OR PROOF OF PERFORMANCE (PDF, XML, JSON).
                 </p>
-                <button 
-                  onClick={handleProcess}
-                  className="bg-basalt-orange text-black px-6 py-3 text-xs font-black tracking-widest hover:bg-white transition-colors flex items-center gap-2"
+                <div 
+                  className="w-full border-2 border-dashed border-basalt-800 bg-basalt-900/50 hover:bg-basalt-800 hover:border-basalt-orange transition-all p-8 mb-6 cursor-pointer flex flex-col items-center justify-center relative group"
+                  onClick={() => document.getElementById('file-upload')?.click()}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.currentTarget.classList.add('border-basalt-orange', 'bg-basalt-orange/10');
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.currentTarget.classList.remove('border-basalt-orange', 'bg-basalt-orange/10');
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.currentTarget.classList.remove('border-basalt-orange', 'bg-basalt-orange/10');
+                    if(e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                      handleProcess();
+                    }
+                  }}
                 >
-                  <Flame className="w-4 h-4" />
-                  PROCESS & BURN TOKENS
-                </button>
+                  <input 
+                    type="file" 
+                    id="file-upload" 
+                    className="hidden" 
+                    accept=".pdf,.xml,.json,.png,.jpg"
+                    onChange={(e) => {
+                      if(e.target.files && e.target.files.length > 0) {
+                        handleProcess();
+                      }
+                    }}
+                  />
+                  <FileCheck2 className="w-6 h-6 text-zinc-500 group-hover:text-basalt-orange mb-2" />
+                  <span className="text-[10px] tracking-widest font-bold text-zinc-400 group-hover:text-white uppercase transition-colors">
+                    Click or Drag to Select File
+                  </span>
+                </div>
               </motion.div>
             ) : (
               <div className="w-full max-w-sm space-y-6 z-10">

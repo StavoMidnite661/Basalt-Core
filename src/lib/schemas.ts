@@ -60,4 +60,23 @@ export const TreasuryMetricsSchema = z.object({
   last_settlement_hash: z.string(),
 });
 
-export type TreasuryMetrics = z.infer<typeof TreasuryMetricsSchema>;
+
+export const PerformanceProofSchema = z.object({
+  proofId: z.string().regex(/^PRP-[A-Z0-9]+$/),
+  referenceInvoiceId: z.string(),
+  proofType: z.enum(['DIGITAL_SIGNATURE', 'IOT_GEOLOCATION', 'BLOCK_TIMESTAMP', 'ORACLE_FEED']),
+  verificationHash: z.string(), // Cryptographic proof of work/delivery
+  status: z.enum(['WAITING', 'VERIFIED', 'DISPUTED']),
+  performanceDelta: z.number().min(0).max(1), // 1.0 = 100% completion
+});
+
+export const RailExitSchema = z.object({
+  exitId: z.string().uuid(),
+  svt_burn_hash: z.string(), // Proof that SVT was destroyed/locked in exchange for Fiat
+  fiat_target: z.enum(['ACH', 'SWIFT', 'FEDWIRE']),
+  iso_20022_msg_id: z.string(), // The pacs.008 or pain.001 ID
+  destination_account: z.string().regex(/^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$/), // IBAN Mask
+  clearing_status: z.enum(['PENDING_EXIT', 'RAIL_ACKNOWLEDGED', 'SETTLED_EXTERNALLY', 'RAIL_REJECTION']),
+});
+
+export type RailExit = z.infer<typeof RailExitSchema>;

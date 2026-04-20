@@ -31,8 +31,8 @@ export default function TaxStrategy() {
       {/* Header */}
       <div className="col-span-12 border-b border-basalt-800 pb-4 flex justify-between items-end shrink-0">
         <div>
-          <h1 className="text-xl font-black tracking-tighter text-white">06_STRATEGIC_TAX_ENGINE</h1>
-          <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">Authority: Statutes at Large // Method: Accrual</p>
+          <h1 className="text-xl font-black tracking-tighter text-white">07_STRATEGIC_TAX_ENGINE</h1>
+          <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">Sovereign Treasury Optimization // Audit Defense Protocol</p>
         </div>
         <div className="text-[10px] text-authority-cyan bg-basalt-900 px-3 py-1 border border-authority-cyan/30 font-bold tracking-widest">
           CHEVRON_DEFERENCE: OVERTURNED // IRS_AUTHORITY: LIMITED

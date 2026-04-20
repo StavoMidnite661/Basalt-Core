@@ -14,16 +14,15 @@ export default function UccEngine() {
     <div className="h-full flex flex-col p-6 font-mono text-zinc-200 gap-6 max-w-6xl mx-auto min-h-0">
       <header className="border-b border-basalt-800 pb-4 flex justify-between items-end shrink-0">
         <div>
-          <h2 className="text-lg font-black tracking-widest text-white flex items-center gap-2">
-            <FileSignature className="w-5 h-5 text-authority-amber" />
-            UCC-9_PROTOCOL_ENGINE
+          <h2 className="text-xl font-black tracking-widest text-white flex items-center gap-2 uppercase">
+            03_UCC_9_SECURITIZATION
           </h2>
-          <p className="text-xs text-zinc-500 mt-1 uppercase tracking-wider">
-            Asset Perfection & Lien Priority Logic
+          <p className="text-[10px] text-zinc-500 mt-1 uppercase tracking-widest font-bold">
+            Asset Perfection & Legal Oracle Integration
           </p>
         </div>
-        <button className="px-4 py-2 bg-authority-amber/10 border border-authority-amber text-xs text-authority-amber hover:bg-authority-amber/20 transition-colors font-bold tracking-widest">
-          FILE_UCC1_INITIAL
+        <button className="px-4 py-2 bg-authority-amber/10 border border-authority-amber text-[10px] text-authority-amber hover:bg-authority-amber/20 transition-colors font-bold tracking-widest uppercase">
+          TRIGGER_LEGAL_ORACLE
         </button>
       </header>
 
