@@ -86,7 +86,7 @@ export default function TransactionModal({ event, onClose, onSelectClient }: Tra
           <div className="space-y-4 border-b border-basalt-800 pb-6">
             <div>
               <div className="text-[10px] text-zinc-500 mb-1 font-bold tracking-widest uppercase">Transaction Data Hash</div>
-              <div className="font-mono text-[10px] text-zinc-400 break-all">{event.hash_signature || `0x90413cca72cd4d24a96e92bc7155216c20744f2f0c0840f9b87da790`}</div>
+              <div className="font-mono text-[10px] text-zinc-400 break-all">{event.instrument.hash_signature || `0x90413cca72cd4d24a96e92bc7155216c20744f2f0c0840f9b87da790`}</div>
             </div>
             <div>
               <div className="text-[10px] text-zinc-500 mb-1 font-bold tracking-widest uppercase">Compliance Data Hash</div>
