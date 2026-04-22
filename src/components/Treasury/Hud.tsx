@@ -50,53 +50,54 @@ export default function TreasuryHud({ onMint, systemFault, onAudit }: { onMint?:
   };
 
   return (
-    <div className="p-6 h-full bg-basalt-bg grid grid-cols-12 gap-6 font-mono overflow-y-auto min-h-0 max-w-6xl mx-auto w-full">
+    <div className="p-4 md:p-6 h-full bg-basalt-bg flex flex-col gap-4 md:gap-6 font-mono overflow-y-auto min-h-0 max-w-6xl mx-auto w-full">
       {/* 05_TREASURY_AUTHORITY_HEADER */}
-      <div className="col-span-12 border-b border-basalt-800 pb-4 flex justify-between items-center shrink-0">
+      <div className="border-b border-basalt-800 pb-2 md:pb-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center shrink-0 gap-4 sm:gap-0">
         <div>
-          <h1 className="text-xl font-black tracking-tighter text-white">04_STORED_VALUE_ISSUANCE</h1>
-          <p className="text-[10px] text-zinc-500 uppercase italic font-bold tracking-widest mt-1">UCC-9 Backed Private Credit // SEIGNIORAGE QUORUM</p>
+          <h1 className="text-lg md:text-xl font-black tracking-tighter text-white">04_STORED_VALUE_ISSUANCE</h1>
+          <p className="text-[8px] md:text-[10px] text-zinc-500 uppercase italic font-bold tracking-widest mt-0.5 md:mt-1">UCC-9 Backed Private Credit</p>
         </div>
-        <div className="flex gap-8">
+        <div className="flex gap-4 md:gap-8 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-hide shrink-0">
           <TrendStat label="TNE" value={`$${(metrics.total_net_equity/1000000).toFixed(2)}M`} color="text-authority-cyan" />
           <TrendStat label="CCR" value={metrics.collateral_coverage_ratio.toFixed(2)} color="text-authority-amber" />
         </div>
       </div>
 
-      {/* Main Equity Pulse (The "Mechanical Lung") */}
-      <div className="col-span-12 lg:col-span-8 bg-basalt-panel border border-basalt-800 p-8 relative overflow-hidden flex flex-col min-h-0">
-        <div className="absolute top-4 right-4 text-[8px] text-zinc-700 uppercase font-bold tracking-widest">Equity_Liquidity_Oscillation</div>
-        
-        <div className="h-64 flex items-end gap-1 flex-1">
-          {/* Simulated Real-Time Equity Waves */}
-          {[...Array(40)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-full bg-authority-cyan/20 border-t border-authority-cyan"
-              initial={{ height: "20%" }}
-              animate={{ height: [`${20 + Math.random() * 40}%`, `${30 + Math.random() * 50}%`, "25%"] }}
-              transition={{ duration: 3, repeat: Infinity, delay: i * 0.1 }}
-            />
-          ))}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 flex-1 min-h-0">
+        {/* Main Equity Pulse (The "Mechanical Lung") */}
+        <div className="col-span-1 lg:col-span-8 bg-basalt-panel border border-basalt-800 p-4 md:p-8 relative overflow-hidden flex flex-col min-h-[300px] lg:min-h-0 shrink-0 lg:shrink">
+          <div className="absolute top-2 right-2 md:top-4 md:right-4 text-[6px] md:text-[8px] text-zinc-700 uppercase font-bold tracking-widest bg-basalt-panel z-10 px-1">Equity_Liquidity_Oscillation</div>
+          
+          <div className="h-32 md:h-64 flex items-end gap-0.5 md:gap-1 flex-1">
+            {/* Simulated Real-Time Equity Waves */}
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-full bg-authority-cyan/20 border-t border-authority-cyan"
+                initial={{ height: "20%" }}
+                animate={{ height: [`${20 + Math.random() * 40}%`, `${30 + Math.random() * 50}%`, "25%"] }}
+                transition={{ duration: 3, repeat: Infinity, delay: i * 0.1 }}
+              />
+            ))}
+          </div>
+          
+          <div className="mt-4 md:mt-6 grid grid-cols-3 gap-2 md:gap-4 border-t border-basalt-800 pt-4 md:pt-6 shrink-0">
+            <MetricBlock label="RESERVE_RATIO" value={`${(metrics.reserve_ratio * 100).toFixed(1)}%`} />
+            <MetricBlock label="MINT_VELOCITY" value={`${metrics.minting_velocity} EPS`} />
+            <MetricBlock label="CAPA_REMAIN" value={`$${(metrics.minting_capacity/1000).toFixed(0)}K`} />
+          </div>
         </div>
-        
-        <div className="mt-6 grid grid-cols-3 gap-4 border-t border-basalt-800 pt-6 shrink-0">
-          <MetricBlock label="RESERVE_RATIO" value={`${(metrics.reserve_ratio * 100).toFixed(1)}%`} />
-          <MetricBlock label="MINT_VELOCITY" value={`${metrics.minting_velocity} EPS`} />
-          <MetricBlock label="CAPACITY_REMAINING" value={`$${(metrics.minting_capacity/1000).toFixed(0)}K`} />
-        </div>
-      </div>
 
-      {/* Authority Control Panel */}
-      <div className="col-span-12 lg:col-span-4 space-y-4 flex flex-col min-h-0">
-        <div className="bg-basalt-950 border border-basalt-800 p-6 flex flex-col justify-between h-full chamfer-br">
-          {pendingTx ? (
-            <QuorumStaging 
-              pendingTx={pendingTx} 
-              onConsensusReached={handleConsensusReached}
-              onSignatureAdded={handleSignatureAdded}
-            />
-          ) : (
+        {/* Authority Control Panel */}
+        <div className="col-span-1 lg:col-span-4 space-y-4 flex flex-col min-h-0 shrink-0 lg:shrink">
+          <div className="bg-basalt-950 border border-basalt-800 p-4 md:p-6 flex flex-col justify-between h-full chamfer-br">
+            {pendingTx ? (
+              <QuorumStaging 
+                pendingTx={pendingTx} 
+                onConsensusReached={handleConsensusReached}
+                onSignatureAdded={handleSignatureAdded}
+              />
+            ) : (
             <>
               <div>
                 <h3 className="text-[10px] font-black text-white mb-6 tracking-widest uppercase underline decoration-authority-cyan underline-offset-4">Minting_Controls</h3>
@@ -138,18 +139,19 @@ export default function TreasuryHud({ onMint, systemFault, onAudit }: { onMint?:
           )}
         </div>
       </div>
+      </div> {/* Closes grid grid-cols-1 lg:grid-cols-12 */}
 
       {/* Settlement Log Footnote */}
-      <div className="col-span-12 bg-basalt-panel border border-basalt-800 p-4 flex justify-between items-center shrink-0">
-        <div className="text-[9px] text-zinc-500 font-bold tracking-widest">
-          LAST_SETTLEMENT: <span className="text-zinc-300 ml-2">{metrics.last_settlement_hash}</span>
+      <div className="bg-basalt-panel border border-basalt-800 p-3 md:p-4 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center shrink-0 gap-2 sm:gap-0">
+        <div className="text-[8px] md:text-[9px] text-zinc-500 font-bold tracking-widest break-all">
+          LAST_SETTLEMENT: <span className="text-zinc-300 ml-1 md:ml-2">{metrics.last_settlement_hash}</span>
         </div>
-        <div className="flex gap-6">
-          <span className="text-[9px] text-green-500 font-bold tracking-widest italic animate-pulse flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
+        <div className="flex gap-4 md:gap-6 w-full sm:w-auto shrink-0 mt-2 sm:mt-0 items-center justify-between sm:justify-end">
+          <span className="text-[8px] md:text-[9px] text-green-500 font-bold tracking-widest italic animate-pulse flex items-center gap-1.5 md:gap-2">
+            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500 shrink-0" />
             CLEARING_HOUSE_ONLINE
           </span>
-          <span className="text-[9px] text-zinc-500 font-bold tracking-widest">UCC-9_SYNC: 100%</span>
+          <span className="text-[8px] md:text-[9px] text-zinc-500 font-bold tracking-widest shrink-0">UCC-9_SYNC: 100%</span>
         </div>
       </div>
     </div>

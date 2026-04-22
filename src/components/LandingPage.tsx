@@ -61,20 +61,21 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center z-10 w-full max-w-4xl"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 border border-basalt-800 bg-basalt-900 rounded-full text-[9px] text-authority-cyan tracking-widest font-bold mb-8 uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 border border-basalt-800 bg-basalt-900 rounded-full text-[8px] md:text-[9px] text-authority-cyan tracking-widest font-bold mb-4 md:mb-8 uppercase">
             <Network className="w-3 h-3" />
-            Distributed Ledger Technology • TigerBeetle Engine
+            <span className="hidden sm:inline">Distributed Ledger Technology • TigerBeetle Engine</span>
+            <span className="sm:hidden">DLT • TigerBeetle Engine</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-[0.9] mb-6">
-            The Era of <br />
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-[1] mb-4 md:mb-6">
+            The Era of <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-500">
               Narrative Finance
             </span>
             <br /> <span className="text-basalt-orange">is Over.</span>
           </h1>
 
-          <p className="text-xs md:text-sm text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-widest font-bold uppercase mb-10 border-l-2 border-authority-cyan pl-6 text-left">
+          <p className="hidden sm:block text-xs md:text-sm text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-widest font-bold uppercase mb-8 md:mb-10 border-l-2 border-authority-cyan pl-6 text-left">
             SOVRCOR is a high-fidelity sovereignty engine. 
             Bypass the narrative promise of commercial banking and enter the mechanical truth of a private, distributed ledger. 
             Zero external exposure. Absolute asset perfection.
@@ -91,28 +92,30 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full"
               >
                 {/* Treasury Admin Card */}
                 <div className="group relative">
                   <div className="absolute inset-0 bg-authority-cyan/5 blur-xl group-hover:bg-authority-cyan/10 transition-colors duration-500" />
-                  <div className="relative h-full bg-basalt-panel border-2 border-basalt-800 group-hover:border-authority-cyan/50 p-6 lg:p-8 flex flex-col transition-all duration-300 chamfer-br">
-                    <div className="mb-6">
-                      <Lock className="w-8 h-8 lg:w-10 lg:h-10 text-authority-cyan mb-4" />
-                      <h2 className="text-xl lg:text-2xl font-black text-white tracking-tighter uppercase mb-2">Authority Login</h2>
-                      <div className="text-[9px] text-authority-cyan tracking-widest font-bold uppercase">Treasury / System Admin</div>
+                  <div className="relative h-full bg-basalt-panel border-2 border-basalt-800 group-hover:border-authority-cyan/50 p-4 sm:p-6 lg:p-8 flex flex-col transition-all duration-300 chamfer-br">
+                    <div className="mb-4 sm:mb-6 flex sm:block items-center gap-4">
+                      <Lock className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-authority-cyan sm:mb-4 shrink-0" />
+                      <div>
+                        <h2 className="text-lg sm:text-xl lg:text-2xl font-black text-white tracking-tighter uppercase mb-1">Authority Login</h2>
+                        <div className="text-[8px] sm:text-[9px] text-authority-cyan tracking-widest font-bold uppercase">Treasury / System Admin</div>
+                      </div>
                     </div>
                     
-                    <p className="text-[10px] lg:text-xs text-zinc-400 leading-relaxed font-bold tracking-widest mb-8 flex-1">
+                    <p className="hidden sm:block text-[10px] lg:text-xs text-zinc-400 leading-relaxed font-bold tracking-widest mb-6 sm:mb-8 flex-1">
                       Access the core ledger topology. Manage asset perfection, initiate seigniorage, and oversee global system health.
                     </p>
 
                     <button 
                       onClick={() => { setActivePrompt('TREASURY'); setError(''); setPassphrase(''); }}
-                      className="w-full py-3 lg:py-4 bg-basalt-900 border border-authority-cyan text-authority-cyan font-black text-[10px] lg:text-xs tracking-widest uppercase hover:bg-authority-cyan hover:text-black transition-all flex justify-between items-center px-4 md:px-6 mt-auto"
+                      className="w-full py-3 lg:py-4 bg-basalt-900 border border-authority-cyan text-authority-cyan font-black text-[9px] sm:text-[10px] lg:text-xs tracking-widest uppercase hover:bg-authority-cyan hover:text-black transition-all flex justify-between items-center px-4 md:px-6 mt-auto"
                     >
                       <span>Initialize Core</span>
-                      <Key className="w-4 h-4" />
+                      <Key className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>
@@ -120,23 +123,25 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                 {/* Vendor Portal Card */}
                 <div className="group relative">
                   <div className="absolute inset-0 bg-basalt-orange/5 blur-xl group-hover:bg-basalt-orange/10 transition-colors duration-500" />
-                  <div className="relative h-full bg-basalt-panel border-2 border-basalt-800 group-hover:border-basalt-orange/50 p-6 lg:p-8 flex flex-col transition-all duration-300 chamfer-br">
-                    <div className="mb-6">
-                      <Zap className="w-8 h-8 lg:w-10 lg:h-10 text-basalt-orange mb-4" />
-                      <h2 className="text-xl lg:text-2xl font-black text-white tracking-tighter uppercase mb-2">Vendor Access</h2>
-                      <div className="text-[9px] text-basalt-orange tracking-widest font-bold uppercase">Supply Chain Operations</div>
+                  <div className="relative h-full bg-basalt-panel border-2 border-basalt-800 group-hover:border-basalt-orange/50 p-4 sm:p-6 lg:p-8 flex flex-col transition-all duration-300 chamfer-br">
+                    <div className="mb-4 sm:mb-6 flex sm:block items-center gap-4">
+                      <Zap className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-basalt-orange sm:mb-4 shrink-0" />
+                      <div>
+                        <h2 className="text-lg sm:text-xl lg:text-2xl font-black text-white tracking-tighter uppercase mb-1">Vendor Access</h2>
+                        <div className="text-[8px] sm:text-[9px] text-basalt-orange tracking-widest font-bold uppercase">Supply Chain Operations</div>
+                      </div>
                     </div>
                     
-                    <p className="text-[10px] lg:text-xs text-zinc-400 leading-relaxed font-bold tracking-widest mb-8 flex-1">
+                    <p className="hidden sm:block text-[10px] lg:text-xs text-zinc-400 leading-relaxed font-bold tracking-widest mb-6 sm:mb-8 flex-1">
                       Onboard entities, pledge performance instruments, and verify digital receipts against the master ledger.
                     </p>
 
                     <button 
                       onClick={() => { setActivePrompt('VENDOR'); setError(''); setPassphrase(''); }}
-                      className="w-full py-3 lg:py-4 bg-basalt-900 border border-basalt-orange text-basalt-orange font-black text-[10px] lg:text-xs tracking-widest uppercase hover:bg-basalt-orange hover:text-black transition-all flex justify-between items-center px-4 md:px-6 mt-auto"
+                      className="w-full py-3 lg:py-4 bg-basalt-900 border border-basalt-orange text-basalt-orange font-black text-[9px] sm:text-[10px] lg:text-xs tracking-widest uppercase hover:bg-basalt-orange hover:text-black transition-all flex justify-between items-center px-4 md:px-6 mt-auto"
                     >
                       <span>Initialize Gateway</span>
-                      <Key className="w-4 h-4" />
+                      <Key className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>

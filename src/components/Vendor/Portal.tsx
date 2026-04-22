@@ -174,39 +174,39 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
   }
 
   return (
-    <div className="h-full flex flex-col p-6 font-mono text-zinc-200 gap-6 max-w-6xl mx-auto min-h-0">
-      <header className="flex justify-between items-end border-b border-basalt-800 pb-4 shrink-0">
+    <div className="h-full flex flex-col p-4 md:p-6 font-mono text-zinc-200 gap-4 md:gap-6 max-w-6xl mx-auto min-h-0">
+      <header className="flex flex-col sm:flex-row justify-between sm:items-end border-b border-basalt-800 pb-2 md:pb-4 shrink-0 gap-4 sm:gap-0">
         <div>
-          <h2 className="text-xl font-black tracking-widest text-white flex items-center gap-3">
-            <ShieldAlert className="w-6 h-6 text-basalt-orange" />
+          <h2 className="text-lg md:text-xl font-black tracking-widest text-white flex items-center gap-2 md:gap-3">
+            <ShieldAlert className="w-5 h-5 md:w-6 md:h-6 text-basalt-orange" />
             01_SUPPLY_CHAIN_PORTAL
           </h2>
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-4 mt-4 overflow-x-auto scrollbar-hide">
             <button 
               onClick={() => setPortalTab('PERFORMANCE')}
-              className={`text-[10px] font-bold tracking-widest pb-2 border-b-2 transition-colors ${portalTab === 'PERFORMANCE' ? 'border-basalt-orange text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+              className={`text-[9px] md:text-[10px] font-bold tracking-widest pb-2 border-b-2 transition-colors whitespace-nowrap ${portalTab === 'PERFORMANCE' ? 'border-basalt-orange text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
             >
               PERFORMANCE ATTESTATION
             </button>
             <button 
               onClick={() => setPortalTab('ONBOARDING')}
-              className={`text-[10px] font-bold tracking-widest pb-2 border-b-2 transition-colors ${portalTab === 'ONBOARDING' ? 'border-basalt-orange text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+              className={`text-[9px] md:text-[10px] font-bold tracking-widest pb-2 border-b-2 transition-colors whitespace-nowrap ${portalTab === 'ONBOARDING' ? 'border-basalt-orange text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
             >
               VENDOR ONBOARDING
             </button>
           </div>
         </div>
-        <div className="text-right">
-          <div className="text-[10px] text-zinc-500 font-bold tracking-widest mb-1">ACTIVE SESSION</div>
+        <div className="text-left sm:text-right">
+          <div className="text-[9px] md:text-[10px] text-zinc-500 font-bold tracking-widest mb-1">ACTIVE SESSION</div>
           <div className="text-sm font-black text-basalt-green tracking-widest">{vendorCode.toUpperCase()}</div>
         </div>
       </header>
 
       {portalTab === 'PERFORMANCE' ? (
-        <div className="flex-1 grid grid-cols-2 gap-6 min-h-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 overflow-y-auto lg:overflow-visible min-h-0">
           {/* Upload & Burn Zone */}
-        <div className="flex flex-col gap-6 min-h-0">
-          <div className="flex-1 border border-dashed border-basalt-orange/50 p-6 flex flex-col items-center justify-center bg-basalt-orange/5 relative overflow-hidden">
+        <div className="flex flex-col gap-4 md:gap-6 min-h-0 shrink-0 lg:shrink">
+          <div className="flex-1 border border-dashed border-basalt-orange/50 p-4 md:p-6 flex flex-col items-center justify-center bg-basalt-orange/5 relative overflow-hidden min-h-[300px]">
             {processingState === 'IDLE' ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center flex flex-col items-center w-full max-w-sm">
                 <Upload className="w-10 h-10 text-basalt-orange mb-4" />
@@ -306,46 +306,46 @@ export default function VendorPortal({ onBurn }: { onBurn: (attestationId: strin
         </div>
 
         {/* Status & Attestation Panel */}
-        <div className="flex flex-col gap-6 min-h-0">
-          <div className="bg-basalt-panel border border-basalt-800 chamfer-br p-6 flex flex-col flex-1">
-            <h3 className="text-sm font-black text-white tracking-wide mb-6 flex items-center gap-3">
-              <div className="w-1 h-4 bg-basalt-green" />
+        <div className="flex flex-col gap-4 md:gap-6 min-h-0 shrink-0 lg:shrink">
+          <div className="bg-basalt-panel border border-basalt-800 chamfer-br p-4 md:p-6 flex flex-col flex-1 min-h-[350px]">
+            <h3 className="text-xs md:text-sm font-black text-white tracking-wide mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+              <div className="w-1 h-3 md:h-4 bg-basalt-green" />
               SMART CONTRACT VAULT STATUS
             </h3>
             
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-xs font-bold">
+            <div className="space-y-3 md:space-y-4 mb-4 md:mb-6">
+              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-[10px] md:text-xs font-bold">
                 <span className="text-zinc-400 tracking-widest">VAULT BALANCE</span>
                 <span className="text-white tracking-widest">842,000.00 SVT</span>
               </div>
-              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-xs font-bold">
+              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-[10px] md:text-xs font-bold">
                 <span className="text-zinc-400 tracking-widest">TOKENS BURNED (YTD)</span>
                 <span className="text-basalt-orange tracking-widest">{(totalBurned).toLocaleString(undefined, { minimumFractionDigits: 2 })} SVT</span>
               </div>
-              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-xs font-bold">
-                <span className="text-zinc-400 tracking-widest">NISTIR 8202 COMPLIANCE</span>
+              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-[10px] md:text-xs font-bold">
+                <span className="text-zinc-400 tracking-widest">NISTIR CRITERIA</span>
                 <span className="text-basalt-green tracking-widest">VERIFIED</span>
               </div>
             </div>
 
             <div className="mt-auto">
-              <h4 className="text-[10px] font-bold text-zinc-500 tracking-widest mb-3 flex items-center justify-between">
+              <h4 className="text-[9px] md:text-[10px] font-bold text-zinc-500 tracking-widest mb-2 md:mb-3 flex items-center justify-between">
                 <span>RECENT ATTESTATIONS</span>
                 <Mail className="w-3 h-3 text-zinc-600" />
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-2 overflow-y-auto max-h-32">
                 {attestations.map((att) => (
-                  <div key={att.id} className="bg-basalt-950 border border-basalt-800 p-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FileCheck2 className="w-4 h-4 text-basalt-green" />
+                  <div key={att.id} className="bg-basalt-950 border border-basalt-800 p-2 md:p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <FileCheck2 className="w-3 h-3 md:w-4 md:h-4 text-basalt-green" />
                       <div>
-                        <div className="text-[10px] font-bold text-white">{att.id}</div>
-                        <div className="text-[8px] text-zinc-500">{att.emailed ? 'RECEIPT EMAILED' : 'PROCESSING...'}</div>
+                        <div className="text-[9px] md:text-[10px] font-bold text-white">{att.id}</div>
+                        <div className="text-[7px] md:text-[8px] text-zinc-500">{att.emailed ? 'RECEIPT EMAILED' : 'PROCESSING...'}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] font-bold text-basalt-orange">-{att.amount} SVT</div>
-                      <div className="text-[8px] text-zinc-500">BURNED</div>
+                      <div className="text-[9px] md:text-[10px] font-bold text-basalt-orange">-{att.amount} SVT</div>
+                      <div className="text-[7px] md:text-[8px] text-zinc-500">BURNED</div>
                     </div>
                   </div>
                 ))}

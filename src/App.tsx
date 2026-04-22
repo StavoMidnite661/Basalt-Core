@@ -184,35 +184,54 @@ export default function App() {
   return (
     <div className={`flex flex-col h-screen w-full bg-basalt-bg text-zinc-200 overflow-hidden selection:bg-basalt-orange/30 font-mono ${systemFault ? 'mechanical-fault' : ''}`}>
       {/* Header */}
-      <header className="h-14 border-b border-basalt-800 flex justify-between items-center px-6 shrink-0 bg-basalt-bg z-10 relative">
-        <div className="text-lg font-black tracking-tighter text-white flex items-center gap-4">
-          <div>SOVR<span className="text-basalt-orange">COR</span></div>
-          {/* Identity Toggle */}
-          <div className="mx-4 h-6 border-l border-basalt-800" />
-          <div className="flex bg-basalt-950 border border-basalt-800 p-0.5 rounded-sm">
+      <header className="h-auto md:h-14 py-2 border-b border-basalt-800 flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-6 shrink-0 bg-basalt-bg z-10 relative">
+        <div className="flex justify-between items-center w-full md:w-auto">
+          <div className="text-sm md:text-lg font-black tracking-tighter text-white flex items-center shrink-0">
+            SOVR<span className="text-basalt-orange">COR</span>
+          </div>
+          
+          {/* Mobile Status - Hidden on Desktop */}
+          <div className="md:hidden flex items-center gap-2">
+            {userRole === 'TREASURY' && (
+              <>
+                <span className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor] ${systemFault ? 'bg-mechanical-red text-mechanical-red' : 'bg-basalt-green text-basalt-green'}`} />
+                <span className={`text-[8px] tracking-widest font-bold ${systemFault ? 'text-mechanical-red' : 'text-basalt-green'}`}>
+                  {systemFault ? 'FAULT' : 'SYNC'}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+        
+        {/* Identity Toggle */}
+        <div className="flex md:items-center mt-3 md:mt-0 overflow-x-auto w-full md:w-auto justify-start md:justify-end pb-1 md:pb-0 scrollbar-hide">
+          <div className="hidden md:block mx-4 h-6 border-l border-basalt-800 shrink-0" />
+          <div className="flex bg-basalt-950 border border-basalt-800 p-0.5 rounded-sm shrink-0">
             <button 
               onClick={() => { setUserRole('TREASURY'); setActiveTab('ingestion'); }}
-              className={`text-[8px] font-bold tracking-widest px-3 py-1 uppercase transition-colors ${userRole === 'TREASURY' ? 'bg-authority-cyan text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
+              className={`text-[8px] md:text-[9px] font-bold tracking-widest px-2 sm:px-3 py-1 uppercase transition-colors ${userRole === 'TREASURY' ? 'bg-authority-cyan text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
               CFO_Admin
             </button>
             <button 
               onClick={() => { setUserRole('VENDOR'); setActiveTab('vendor'); }}
-              className={`text-[8px] font-bold tracking-widest px-3 py-1 uppercase transition-colors ${userRole === 'VENDOR' ? 'bg-basalt-orange text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
+              className={`text-[8px] md:text-[9px] font-bold tracking-widest px-2 sm:px-3 py-1 uppercase transition-colors ${userRole === 'VENDOR' ? 'bg-basalt-orange text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
               Vendor_Portal
             </button>
             <button 
               onClick={() => { setUserRole('LANDING'); }}
-              className={`text-[8px] font-bold tracking-widest px-3 py-1 uppercase transition-colors text-zinc-600 hover:text-mechanical-red hover:bg-mechanical-red/10 border-l border-basalt-800 ml-1`}
+              className={`text-[8px] md:text-[9px] font-bold tracking-widest px-2 sm:px-3 py-1 uppercase transition-colors text-zinc-600 hover:text-mechanical-red hover:bg-mechanical-red/10 border-l border-basalt-800 ml-1`}
               title="Terminate Session"
             >
               EXIT
             </button>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-[10px] font-bold tracking-widest text-zinc-400">
-          <span>SESSION: RECEIVERSHIP_9921_X</span>
+        
+        {/* Desktop Status - Hidden on Mobile */}
+        <div className="hidden md:flex items-center gap-4 text-[10px] font-bold tracking-widest text-zinc-400 shrink-0 ml-4">
+          <span className="hidden lg:inline">SESSION: RECEIVERSHIP_9921_X</span>
           {userRole === 'TREASURY' && (
             <div className="flex items-center gap-2">
               <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_currentColor] ${systemFault ? 'bg-mechanical-red text-mechanical-red' : 'bg-basalt-green text-basalt-green'}`} />
@@ -257,9 +276,9 @@ export default function App() {
           )}
         </div>
 
-        {/* Stacked Logs Column - ONLY VISIBLE TO TREASURY */}
+        {/* Stacked Logs Column - ONLY VISIBLE TO TREASURY ON DESKTOP */}
         {userRole === 'TREASURY' && (
-          <div className="w-80 flex flex-col border-l border-basalt-800 bg-basalt-bg shrink-0 z-10">
+          <div className="hidden lg:flex w-80 flex-col border-l border-basalt-800 bg-basalt-bg shrink-0 z-10 overflow-hidden">
             <div className="flex-1 min-h-0 overflow-hidden">
               <TruthStream rawBuffer={rawBuffer} onSelectEvent={setSelectedEvent} />
             </div>
@@ -272,32 +291,32 @@ export default function App() {
 
       {/* Footer - ONLY VISIBLE TO TREASURY */}
       {userRole === 'TREASURY' && (
-      <footer className="h-20 border-t border-basalt-800 flex items-center px-6 shrink-0 bg-basalt-panel z-10">
-        <div className="flex gap-12 flex-1">
+      <footer className="h-auto md:h-20 py-4 md:py-0 border-t border-basalt-800 flex flex-col md:flex-row items-start md:items-center px-4 md:px-6 shrink-0 bg-basalt-panel z-10 gap-4 md:gap-0">
+        <div className="grid grid-cols-2 md:flex gap-4 md:gap-12 w-full md:w-auto md:flex-1">
           <div>
-            <div className="text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Liquidity Health Ratio</div>
-            <div className="text-xl font-black text-basalt-green tracking-wide">{lhr}</div>
-            <div className="text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">LHR OVER 1.0 (SOLVENT)</div>
+            <div className="text-[9px] md:text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Liquidity Health Ratio</div>
+            <div className="text-base md:text-xl font-black text-basalt-green tracking-wide">{lhr}</div>
+            <div className="hidden md:block text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">LHR OVER 1.0 (SOLVENT)</div>
           </div>
           <div>
-            <div className="text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Performance Gap</div>
-            <div className={`text-xl font-black ${performanceGap > 0 ? 'text-authority-amber' : 'text-zinc-500'} tracking-wide`}>
+            <div className="text-[9px] md:text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Performance Gap</div>
+            <div className={`text-base md:text-xl font-black ${performanceGap > 0 ? 'text-authority-amber' : 'text-zinc-500'} tracking-wide`}>
               ${(performanceGap).toLocaleString(undefined, { minimumFractionDigits: 2 })}
             </div>
-            <div className="text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">TigerBeetle Two-Phase Pending</div>
+            <div className="hidden md:block text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">TigerBeetle Two-Phase Pending</div>
           </div>
-          <div>
-            <div className="text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Treasury Cash (Asset)</div>
-            <div className="text-xl font-black text-white tracking-wide">${(tne).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-            <div className="text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">Liquid Pool Available</div>
+          <div className="hidden sm:block">
+            <div className="text-[9px] md:text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">Treasury Cash (Asset)</div>
+            <div className="text-base md:text-xl font-black text-white tracking-wide">${(tne).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <div className="hidden md:block text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">Liquid Pool Available</div>
           </div>
-          <div>
-            <div className="text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">External Friction (EFC)</div>
-            <div className="text-xl font-black text-mechanical-red tracking-wide">{efc}%</div>
-            <div className="text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">Legacy Rail Value Leak</div>
+          <div className="hidden sm:block">
+            <div className="text-[9px] md:text-[10px] text-zinc-500 font-bold tracking-widest mb-1 uppercase">External Friction (EFC)</div>
+            <div className="text-base md:text-xl font-black text-mechanical-red tracking-wide">{efc}%</div>
+            <div className="hidden md:block text-[8px] text-zinc-600 font-bold tracking-widest mt-0.5 uppercase">Legacy Rail Value Leak</div>
           </div>
         </div>
-        <div className="ml-auto flex flex-col items-end shrink-0">
+        <div className="hidden lg:flex ml-auto flex-col items-end shrink-0">
           <div className="text-[10px] font-bold text-basalt-green tracking-widest mb-1">
             ALL OPERATIONS CONFINED TO PRIVATE LEDGER
           </div>

@@ -75,31 +75,31 @@ export default function IngestionDashboard({ onIngest }: { onIngest: (event?: Pa
   };
 
   return (
-    <div className="h-full flex flex-col p-6 font-mono text-zinc-200 gap-6 max-w-6xl mx-auto min-h-0">
+    <div className="h-full flex flex-col p-4 md:p-6 font-mono text-zinc-200 gap-4 md:gap-6 max-w-6xl mx-auto min-h-0">
       {/* Header */}
-      <h2 className="text-xl font-black text-white shrink-0 tracking-widest flex justify-between items-center bg-basalt-bg border-b border-basalt-800 pb-4">
-        <span>01_LIABILITY_INGESTION (ISO 20022)</span>
-        <div className="text-[10px] text-zinc-500 font-bold bg-basalt-panel px-3 py-1 border border-basalt-800 uppercase">
+      <h2 className="text-lg md:text-xl font-black text-white shrink-0 tracking-widest flex flex-col sm:flex-row justify-between items-start sm:items-center bg-basalt-bg border-b border-basalt-800 pb-2 md:pb-4 gap-2 sm:gap-0">
+        <span className="truncate w-full">01_LIABILITY_INGESTION (ISO 20022)</span>
+        <div className="text-[8px] md:text-[10px] text-zinc-500 font-bold bg-basalt-panel px-2 py-1 md:px-3 border border-basalt-800 uppercase shrink-0">
           Originating Assets
         </div>
       </h2>
 
       {/* Top Drop Zone / XML Input */}
-      <div className="border border-basalt-800 p-6 flex flex-col bg-basalt-panel shrink-0 relative group">
-        <div className="flex justify-between items-center mb-4">
-          <div className="text-authority-cyan text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
-            <FileCode2 className="w-4 h-4" />
-            ISO 20022 Deep Parser (CAMT.053 / PAIN.001)
+      <div className="border border-basalt-800 p-4 md:p-6 flex flex-col bg-basalt-panel shrink-0 relative group">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2 md:gap-0">
+          <div className="text-authority-cyan text-[9px] md:text-[10px] font-bold tracking-widest uppercase flex items-center gap-2">
+            <FileCode2 className="w-3 h-3 md:w-4 md:h-4" />
+            ISO 20022 Deep Parser
           </div>
-          <div className="flex gap-2 relative z-10">
-            <button onClick={loadMockCamt} className="text-[9px] bg-basalt-800 hover:bg-basalt-700 px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors">
-              LOAD MOCK CAMT.053
+          <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 scrollbar-hide relative z-10 shrink-0">
+            <button onClick={loadMockCamt} className="shrink-0 text-[8px] md:text-[9px] bg-basalt-800 hover:bg-basalt-700 px-2 md:px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors whitespace-nowrap">
+              LOAD CAMT
             </button>
-            <button onClick={loadMockPain} className="text-[9px] bg-basalt-800 hover:bg-basalt-700 px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors">
-              LOAD MOCK PAIN.001
+            <button onClick={loadMockPain} className="shrink-0 text-[8px] md:text-[9px] bg-basalt-800 hover:bg-basalt-700 px-2 md:px-3 py-1 text-zinc-300 font-bold tracking-widest transition-colors whitespace-nowrap">
+              LOAD PAIN
             </button>
-            <button onClick={() => document.getElementById('iso-upload')?.click()} className="text-[9px] border border-authority-cyan/50 text-authority-cyan hover:bg-authority-cyan hover:text-black px-3 py-1 font-black tracking-widest transition-colors">
-              UPLOAD XML FILE
+            <button onClick={() => document.getElementById('iso-upload')?.click()} className="shrink-0 text-[8px] md:text-[9px] border border-authority-cyan/50 text-authority-cyan hover:bg-authority-cyan hover:text-black px-2 md:px-3 py-1 font-black tracking-widest transition-colors whitespace-nowrap">
+              UPLOAD XML
             </button>
             <input 
               type="file" 
@@ -153,28 +153,28 @@ export default function IngestionDashboard({ onIngest }: { onIngest: (event?: Pa
             }
           }}
           placeholder="Paste raw ISO 20022 XML here, or drag and drop an .xml file..."
-          className="w-full h-32 bg-basalt-950 border border-basalt-800 p-4 text-[10px] text-zinc-400 font-mono focus:outline-none focus:border-authority-cyan transition-colors resize-none mb-4 relative z-10"
+          className="w-full h-24 md:h-32 bg-basalt-950 border border-basalt-800 p-2 md:p-4 text-[9px] md:text-[10px] text-zinc-400 font-mono focus:outline-none focus:border-authority-cyan transition-colors resize-none mb-4 relative z-10"
         />
 
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
           {parseError ? (
-            <div className="text-mechanical-red text-[10px] font-bold tracking-widest flex items-center gap-2">
-              <AlertTriangle className="w-3 h-3" />
-              {parseError}
+            <div className="text-mechanical-red text-[8px] md:text-[10px] font-bold tracking-widest flex items-center gap-2">
+              <AlertTriangle className="w-3 h-3 shrink-0" />
+              <span className="line-clamp-2">{parseError}</span>
             </div>
           ) : parsedEvent ? (
-            <div className="text-basalt-green text-[10px] font-bold tracking-widest flex items-center gap-2">
-              <Upload className="w-3 h-3" />
+            <div className="text-basalt-green text-[8px] md:text-[10px] font-bold tracking-widest flex items-center gap-2">
+              <Upload className="w-3 h-3 shrink-0" />
               XML PARSED SUCCESSFULLY: {parsedEvent.eventId}
             </div>
           ) : (
-            <div className="text-zinc-500 text-[10px] font-bold tracking-widest">AWAITING XML INPUT</div>
+            <div className="text-zinc-500 text-[8px] md:text-[10px] font-bold tracking-widest">AWAITING XML INPUT</div>
           )}
 
           <button 
             onClick={handleParse}
             disabled={!xmlInput.trim()}
-            className="bg-authority-cyan text-black px-8 py-2 text-[10px] font-black tracking-widest hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto bg-authority-cyan text-black px-4 md:px-8 py-2 text-[9px] md:text-[10px] font-black tracking-widest hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             PARSE & VALIDATE
           </button>
@@ -182,12 +182,12 @@ export default function IngestionDashboard({ onIngest }: { onIngest: (event?: Pa
       </div>
 
       {/* Bottom Panels */}
-      <div className="grid grid-cols-2 gap-6 flex-1 min-h-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 flex-1 overflow-y-auto min-h-0 md:overflow-visible">
          {/* Panel 1 */}
-         <div className="bg-basalt-panel border border-basalt-800 p-6 flex flex-col min-h-0">
-           <h3 className="text-sm font-black text-white tracking-widest mb-6 flex items-center gap-3 shrink-0 uppercase">
-             <div className="w-1 h-4 bg-basalt-orange" />
-             Instrument Characterization
+         <div className="bg-basalt-panel border border-basalt-800 p-4 md:p-6 flex flex-col min-h-0 shrink-0 lg:shrink">
+           <h3 className="text-xs md:text-sm font-black text-white tracking-widest mb-4 md:mb-6 flex items-center gap-2 md:gap-3 shrink-0 uppercase">
+             <div className="w-1 h-3 md:h-4 bg-basalt-orange shrink-0" />
+             <span className="truncate">Instrument Characterization</span>
            </h3>
            
            <div className="space-y-4 overflow-y-auto pr-2">
@@ -209,18 +209,18 @@ export default function IngestionDashboard({ onIngest }: { onIngest: (event?: Pa
              </div>
            </div>
 
-           <div className="mt-auto h-12 bg-stripes border border-basalt-800/30 shrink-0 opacity-20" />
+           <div className="mt-auto h-8 md:h-12 bg-stripes border border-basalt-800/30 shrink-0 opacity-20" />
          </div>
 
          {/* Panel 2 */}
-         <div className="bg-basalt-panel border border-basalt-800 p-6 flex flex-col min-h-0">
-           <h3 className="text-sm font-black text-white tracking-widest mb-4 flex items-center gap-3 shrink-0 uppercase">
-             <div className="w-1 h-4 bg-basalt-orange" />
-             UCC-9 Re-Characterization
+         <div className="bg-basalt-panel border border-basalt-800 p-4 md:p-6 flex flex-col min-h-0 shrink-0 lg:shrink">
+           <h3 className="text-xs md:text-sm font-black text-white tracking-widest mb-2 md:mb-4 flex items-center gap-2 md:gap-3 shrink-0 uppercase">
+             <div className="w-1 h-3 md:h-4 bg-basalt-orange shrink-0" />
+             <span className="truncate">UCC-9 Re-Characterization</span>
            </h3>
-           <p className="text-[9px] text-zinc-500 font-bold tracking-widest mb-6 shrink-0 uppercase">Transformation of liability to private credit via stored value mechanism.</p>
+           <p className="text-[8px] md:text-[9px] text-zinc-500 font-bold tracking-widest mb-4 md:mb-6 shrink-0 uppercase">Transformation of liability to private credit.</p>
            
-           <div className="space-y-4 mb-6 overflow-y-auto pr-2">
+           <div className="space-y-3 md:space-y-4 mb-4 md:mb-6 overflow-y-auto pr-2">
              <div className="flex justify-between items-center border-b border-basalt-800/50 pb-2 text-[10px] font-bold uppercase">
                <span className="text-zinc-500 tracking-widest">FACE VALUE</span>
                <span className="text-white tracking-widest">
