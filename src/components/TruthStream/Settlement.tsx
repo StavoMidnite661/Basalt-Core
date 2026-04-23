@@ -2,17 +2,17 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { useMemo } from "react";
-import { ClearingEvent } from "@/src/lib/schemas";
-import { verifyMechanicalTruth } from "@/src/lib/truth-gate";
+import { ClearingEvent } from "../../lib/schemas";
+import { verifyMechanicalTruth } from "../../lib/truth-gate";
 
 interface TruthStreamProps {
-  rawBuffer: unknown[];
+  rawBuffer: any[];
   onSelectEvent: (event: ClearingEvent) => void;
 }
 
 export default function TruthStream({ rawBuffer, onSelectEvent }: TruthStreamProps) {
   const verifiedEvents = useMemo(() => {
-    return rawBuffer
+    return (rawBuffer || [])
       .map(verifyMechanicalTruth)
       .filter((e): e is ClearingEvent => e !== null);
   }, [rawBuffer]);
@@ -36,11 +36,12 @@ export default function TruthStream({ rawBuffer, onSelectEvent }: TruthStreamPro
             </div>
           ) : (
             verifiedEvents.map((event) => (
-              <VerifiedSettlementCard 
-                key={event.eventId} 
-                event={event} 
-                onSelect={() => onSelectEvent(event)} 
-              />
+              <div key={event.eventId}>
+                <VerifiedSettlementCard
+                  event={event}
+                  onSelect={() => onSelectEvent(event)}
+                />
+              </div>
             ))
           )}
         </AnimatePresence>
@@ -49,7 +50,12 @@ export default function TruthStream({ rawBuffer, onSelectEvent }: TruthStreamPro
   );
 }
 
-function VerifiedSettlementCard({ event, onSelect }: { event: ClearingEvent, onSelect: () => void }) {
+interface VerifiedSettlementCardProps {
+  event: ClearingEvent;
+  onSelect: () => void;
+}
+
+function VerifiedSettlementCard({ event, onSelect }: VerifiedSettlementCardProps) {
   // Alternate between positive and negative for visual variety based on instrument type
   const isPositive = event.instrument.type === 'PROMISSORY_NOTE';
   const colorClass = isPositive ? 'text-basalt-green' : 'text-basalt-orange';
@@ -89,4 +95,3 @@ function VerifiedSettlementCard({ event, onSelect }: { event: ClearingEvent, onS
     </motion.div>
   );
 }
-

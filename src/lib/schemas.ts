@@ -60,6 +60,8 @@ export const TreasuryMetricsSchema = z.object({
   last_settlement_hash: z.string(),
 });
 
+export type TreasuryMetrics = z.infer<typeof TreasuryMetricsSchema>;
+
 
 export const PerformanceProofSchema = z.object({
   proofId: z.string().regex(/^PRP-[A-Z0-9]+$/),
