@@ -13,19 +13,9 @@ export interface AuditEntry {
 export function logAuditEvent(action: string, module: string, user_id?: string, customHash?: string) {
   const id = randomUUID();
   const timestamp = Date.now();
-
-  // NIST Integrity: Hash the audit event itself for chain validation
   const recordContent = `${id}|${action}|${module}|${user_id || 'SYSTEM'}|${timestamp}`;
   const hash = customHash || '0x' + createHash('sha256').update(recordContent).digest('hex');
-
-  const stmt = db.prepare(`
-    INSERT INTO audit_logs (id, action, module, hash, user_id, timestamp)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `);
-
-  stmt.run(id, action, module, hash, user_id || null, timestamp);
-
-  console.log(`[AUDIT] ${module} - ${action} (ID: ${id})`);
+  db.prepare(`INSERT INTO audit_logs (id, action, module, hash, user_id, timestamp) VALUES (?, ?, ?, ?, ?, ?)`).run(id, action, module, hash, user_id || null, timestamp);
   return id;
 }
 

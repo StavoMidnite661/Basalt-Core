@@ -3,10 +3,8 @@ import Database from 'better-sqlite3';
 const dbPath = process.env.DB_PATH || 'sovrcor.db';
 const db = new Database(dbPath);
 
-// Enable WAL mode for performance
 db.pragma('journal_mode = WAL');
 
-// Initialize Tables
 export function initDb() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -15,7 +13,6 @@ export function initDb() {
       password_hash TEXT NOT NULL,
       role TEXT NOT NULL CHECK(role IN ('TREASURY', 'VENDOR', 'ADMIN'))
     );
-
     CREATE TABLE IF NOT EXISTS accounts (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -24,7 +21,6 @@ export function initDb() {
       credits_posted REAL DEFAULT 0,
       credits_pending REAL DEFAULT 0
     );
-
     CREATE TABLE IF NOT EXISTS transfers (
       id TEXT PRIMARY KEY,
       debit_account_id TEXT NOT NULL,
@@ -36,7 +32,6 @@ export function initDb() {
       FOREIGN KEY(debit_account_id) REFERENCES accounts(id),
       FOREIGN KEY(credit_account_id) REFERENCES accounts(id)
     );
-
     CREATE TABLE IF NOT EXISTS audit_logs (
       id TEXT PRIMARY KEY,
       action TEXT NOT NULL,
@@ -46,7 +41,6 @@ export function initDb() {
       timestamp INTEGER NOT NULL,
       FOREIGN KEY(user_id) REFERENCES users(id)
     );
-
     CREATE TABLE IF NOT EXISTS performance_proofs (
       id TEXT PRIMARY KEY,
       reference_invoice_id TEXT NOT NULL,
@@ -56,7 +50,6 @@ export function initDb() {
       performance_delta REAL NOT NULL,
       timestamp INTEGER NOT NULL
     );
-
     CREATE TABLE IF NOT EXISTS tax_assets (
       id TEXT PRIMARY KEY,
       category TEXT NOT NULL,
@@ -68,7 +61,6 @@ export function initDb() {
     );
   `);
 
-  // Seed initial data if accounts are empty
   const accountCount = db.prepare('SELECT COUNT(*) as count FROM accounts').get() as { count: number };
   if (accountCount.count === 0) {
     const insertAccount = db.prepare('INSERT INTO accounts (id, name, credits_posted) VALUES (?, ?, ?)');
